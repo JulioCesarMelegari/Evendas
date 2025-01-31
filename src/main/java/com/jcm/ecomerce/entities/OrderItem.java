@@ -4,15 +4,18 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem {
 	
+	@EqualsAndHashCode.Include
 	@Setter(AccessLevel.NONE)
 	@Getter(AccessLevel.NONE)
 	@EmbeddedId
