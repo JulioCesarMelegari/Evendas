@@ -31,6 +31,19 @@ public class ProductController {
     	ProductDTO dto =  service.findById(id);
     	return ResponseEntity.ok(dto);
     }
+   
+    //metodo com try-cath - se não tivessemos adicionado o ControllerAdvice
+   // @GetMapping(value = "/{id}")
+   // public ResponseEntity<?> findById(@PathVariable("id") Long id){
+   // 	try {
+   // 		ProductDTO dto =  service.findById(id);
+   // 		return ResponseEntity.ok(dto);
+	//	} catch (ResourceNotFoundException e) {
+	//		CustomError err = new CustomError(Instant.now(), 404, e.getMessage(),"caminho" );
+	//		return ResponseEntity.status(404).body(err);
+	//	}    	
+ //   }
+    
     
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
