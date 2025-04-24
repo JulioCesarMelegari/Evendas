@@ -11,6 +11,8 @@ import com.jcm.ecomerce.entities.Product;
 import com.jcm.ecomerce.repositories.ProductRepository;
 import com.jcm.ecomerce.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class ProductService {
 	
@@ -41,10 +43,15 @@ public class ProductService {
 	
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
-		Product entity = repository.getReferenceById(id);//diferentemente do findById(id).get()
-		copyDtoToEntity(dto, entity);				//não faz a busca no banco
-		entity = repository.save(entity);        //apenas referencia no jpa		
-		return new ProductDTO(entity);
+		try {
+			Product entity = repository.getReferenceById(id);//diferentemente do findById(id).get()
+			copyDtoToEntity(dto, entity);				//não faz a busca no banco
+			entity = repository.save(entity);        //apenas referencia no jpa		
+			return new ProductDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Recurso não encontrado");
+		}
+		
 	}
 	
 	@Transactional
