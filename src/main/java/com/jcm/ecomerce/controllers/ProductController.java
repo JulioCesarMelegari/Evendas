@@ -19,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.jcm.ecomerce.dtos.ProductDTO;
 import com.jcm.ecomerce.services.ProductService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -31,19 +33,6 @@ public class ProductController {
     	ProductDTO dto =  service.findById(id);
     	return ResponseEntity.ok(dto);
     }
-   
-    //metodo com try-cath - se não tivessemos adicionado o ControllerAdvice
-   // @GetMapping(value = "/{id}")
-   // public ResponseEntity<?> findById(@PathVariable("id") Long id){
-   // 	try {
-   // 		ProductDTO dto =  service.findById(id);
-   // 		return ResponseEntity.ok(dto);
-	//	} catch (ResourceNotFoundException e) {
-	//		CustomError err = new CustomError(Instant.now(), 404, e.getMessage(),"caminho" );
-	//		return ResponseEntity.status(404).body(err);
-	//	}    	
- //   }
-    
     
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
@@ -52,7 +41,7 @@ public class ProductController {
     }
     
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
     	dto = service.insert(dto);
     	URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
     				.buildAndExpand(dto.getId()).toUri();
@@ -60,7 +49,7 @@ public class ProductController {
     }
     
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @RequestBody ProductDTO dto){
+    public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto){
     	dto =  service.update(id,dto);
     	return ResponseEntity.ok(dto);
     }
