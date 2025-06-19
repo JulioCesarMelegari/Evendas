@@ -4,9 +4,11 @@ import com.jcm.ecomerce.entities.OrderItem;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrderItemDTO {
 	
 	private Long productId;
