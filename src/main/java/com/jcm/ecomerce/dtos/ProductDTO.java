@@ -1,16 +1,19 @@
 package com.jcm.ecomerce.dtos;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.jcm.ecomerce.entities.Category;
 import com.jcm.ecomerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
 	
@@ -24,9 +27,21 @@ public class ProductDTO {
 	@NotBlank(message = "Campo requerido")
 	private String description;
 	
+	
 	@Positive(message = "O preço deve ser positivo")
 	private Double price;
 	private String imgUrl;
+	
+	@NotEmpty(message = "Deve ter pelo menos uma categoria")
+	private List<CategoryDTO> categories = new ArrayList<>();
+	
+	public ProductDTO(Long id, String name,String description,Double price, String imgUrl) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.imgUrl = imgUrl;
+	}
 	
 	public ProductDTO(Product entity) {
 		id = entity.getId();
@@ -34,6 +49,9 @@ public class ProductDTO {
 		description = entity.getDescription();
 		price = entity.getPrice();
 		imgUrl = entity.getImgUrl();
+		for (Category cat : entity.getCategories()) {
+        	categories.add(new CategoryDTO(cat));
+        }
 	}
 
 }
